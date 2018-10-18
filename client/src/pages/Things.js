@@ -7,6 +7,7 @@ class Things extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			things: [],
 			task: "",
 			howTo: ""
 		};
@@ -39,9 +40,24 @@ class Things extends Component {
 			.catch(err => console.log("submitThings: ", err));
 	}
 
+	loadThings = () => {
+		API.getThings()
+			.then(res => {
+				console.log("getting things: ", res.data);
+				this.setState({
+					things: res.data
+				})
+			})
+			.catch(err => console.log("error getting things: ", err));
+	}
+
+	componentDidMount() {
+		this.loadThings();
+	}
+
 	render() {
 		return (
-			<div>
+			<div className="container">
 				<form onSubmit={this.handleSubmit}>
 					<Row>
 	          <Input
