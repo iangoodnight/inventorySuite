@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import { Row, Input } from "react-materialize";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Row, Input, Button } from "react-materialize";
 import Wrapper from "./components/Wrapper";
+import Things from "./pages/Things"
 import Nav from "./components/Nav";
 
 class App extends Component {
@@ -14,10 +15,7 @@ class App extends Component {
           <p className="App-intro">
             To get started, edit <code>src/App.js</code> and save to reload.
           </p>
-          <Row>
-            <Input placeholder="Task" s={6} label="task" />
-            <Input type="textarea" placeholder="How to perform task" s={12} label="howTo" />
-          </Row>  
+          <Things />  
         </Wrapper>
       </div>
     );

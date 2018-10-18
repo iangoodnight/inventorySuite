@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Row, Input } from "react-materialize";
+import { Row, Input, Button } from "react-materialize";
+import API from "../utils/API";
 
-class ThingsForm extends Component {
+class Things extends Component {
 
 	constructor(props) {
 		super(props);
@@ -10,14 +11,12 @@ class ThingsForm extends Component {
 			howTo: ""
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
-	handleInputChange = (event) => {
-		const { name, value } = event.target;
-		this.setState({
-			[name]: value
-		});
-	};
+	handleInputChange(e) {
+		this.setState({ [e.target.name] : e.target.value });
+	}
 
 	handleSubmit = event => {
 		event.preventDefault();
@@ -27,8 +26,53 @@ class ThingsForm extends Component {
 			howTo: this.state.howTo
 		}
 		// to be used later with the withUser services
-		const { history } = this.props;
+		// const { history } = this.props;
 		console.log("Saving data: ", data);
+		API.submitThings(data)
+			.then(res => {
+				console.log("Uploaded successfully");
+				this.setState({
+					task: "",
+					howTo: ""
+				});
+			})
+			.catch(err => console.log("submitThings: ", err));
+	}
+
+	render() {
+		return (
+			<div>
+				<form onSubmit={this.handleSubmit}>
+					<Row>
+	          <Input
+	          	placeholder="Task"
+	          	name="task" 
+	          	s={6} 
+	          	value={this.state.task}
+	          	onChange={this.handleInputChange}
+	          />
+	          <Input
+	          	type="textarea"
+	          	name="howTo" 
+	          	placeholder="How to perform task" 
+	          	s={12} 
+	          	value={this.state.howTo}
+	          	onChange={this.handleInputChange} 
+	         	/>
+	        </Row>
+	        <Row>
+	          <Button 
+	          	waves='light' 
+	          	large={true}
+	          	type="submit"
+	          >Submit
+	          </Button>
+        	</Row>
+        </form>  
+			</div>
+		);
 	}
 
 }
+
+export default Things

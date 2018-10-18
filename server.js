@@ -1,5 +1,8 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const logger = require("morgan");
+const routes = require("./routes");
 const path = require("path");
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -9,6 +12,16 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static("client/build"));
 }
 
+// Use morgan for dev
+app.use(logger("dev"));
+// Configure body parser for AJAX requests
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+// Serve up static assets
+// (probably redundant)
+app.use(express.static("client/build"));
+// Add routes, both API and view
+app.use(routes);
 // Custom error handling middleware that logs the error to console, then renders an error page describing the error.
 app.use((err, req, res, next) => {
 	console.error(error);
@@ -17,17 +30,11 @@ app.use((err, req, res, next) => {
 	})
 });
 
-// Send every request to the React app
-// Define any API routes before this runs
-app.get("*", function(req, res) {
-  res.sendFile(path.join(__dirname, "./client/build/index.html"));
-});
-
 // Configure mongoose
 require('./middleware/mongoose')()
 	.then(() => {
 		// mongo is connected, so now we can start our express server.
-		app.listen(PORT, => console.log(`🌎 ==> Server now on port ${PORT}!`));
+		app.listen(PORT, () => console.log(`🌎 ==> Server now on port ${PORT}!`));
 	})
 	.catch(err => {
 		// an error occurred connecting to mongo
