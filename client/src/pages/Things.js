@@ -39,6 +39,7 @@ class Things extends Component {
 				});
 			})
 			.catch(err => console.log("submitThings: ", err));
+		this.loadThings();
 	}
 
 	loadThings = () => {
@@ -59,6 +60,9 @@ class Things extends Component {
 	render() {
 		return (
 			<div className="container">
+				<div className="container title">
+					<h4>Things to Remember</h4>
+				</div>
 				{this.state.things.length ? (
 					<div>
 					{this.state.things.map(thing => (
