@@ -6,8 +6,8 @@ import {
 } from "react-materialize";
 
 const Expand = props => (
-	<div className="container">
-		<Collapsible>
+	<div>
+		<Collapsible style={{margin: "0"}}>
 			<CollapsibleItem header={props.task} icon='place'>
 				{props.howTo}
 			</CollapsibleItem>
