@@ -8,6 +8,9 @@ import {
 const Expand = props => (
 	<div className="container">
 		<Collapsible>
+			<CollapsibleItem header={props.task} icon='place'>
+				{props.howTo}
+			</CollapsibleItem>
 		</Collapsible>
 	</div>
 );

@@ -62,8 +62,9 @@ class Things extends Component {
 				{this.state.things.length ? (
 					<div>
 					{this.state.things.map(thing => (
-						<Expand task={item.task} howTo={item.howTo} key={item.id}/>
+						<Expand task={thing.task} howTo={thing.howTo} key={thing._id}/>
 					))}
+					</div>
 				) : (
 				<div>
 				  <h3> Uh-oh, looks like we are having some problems finding what you are looking for! </h3>
