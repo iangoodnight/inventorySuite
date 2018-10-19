@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Row, Input, Button } from "react-materialize";
-import Expand from "../components/Expand";
-import API from "../utils/API";
+import Expand from "../../components/Expand";
+import API from "../../utils/API";
+import "./Things.css";
 
 class Things extends Component {
 
@@ -53,6 +54,14 @@ class Things extends Component {
 			.catch(err => console.log("error getting things: ", err));
 	}
 
+	deleteThings = (id) => {
+		API.deleteThings(id)
+			.then(res => {
+				console.log("deleting things: ", id);
+			})
+			.catch(err => console.log("error deleting things: ", err));
+	}
+
 	componentDidMount() {
 		this.loadThings();
 	}
@@ -65,8 +74,8 @@ class Things extends Component {
 				</div>
 				{this.state.things.length ? (
 					<div>
-					{this.state.things.map(thing => (
-						<Expand task={thing.task} howTo={thing.howTo} key={thing._id}/>
+					{this.state.things.map((thing, i) => (
+						<Expand task={thing} key={thing._id} onClick={this.deleteThings} />
 					))}
 					</div>
 				) : (
@@ -74,37 +83,39 @@ class Things extends Component {
 				  <h3> Uh-oh, looks like we are having some problems finding what you are looking for! </h3>
 				</div>
 				)}
-				<form onSubmit={this.handleSubmit}>
-					<Row>
-	          <Input
-	          	placeholder="Task"
-	          	name="task" 
-	          	s={6} 
-	          	value={this.state.task}
-	          	onChange={this.handleInputChange}
-	          />
-	          <Input
-	          	type="textarea"
-	          	name="howTo" 
-	          	placeholder="How to perform task" 
-	          	s={12} 
-	          	value={this.state.howTo}
-	          	onChange={this.handleInputChange} 
-	         	/>
-	        </Row>
-	        <Row>
-	          <Button 
-	          	waves='light' 
-	          	large={true}
-	          	type="submit"
-	          >Submit
-	          </Button>
-        	</Row>
-        </form>  
+				<div>
+					<form onSubmit={this.handleSubmit}>
+						<Row>
+		          <Input
+		          	placeholder="Task"
+		          	name="task" 
+		          	s={6} 
+		          	value={this.state.task}
+		          	onChange={this.handleInputChange}
+		          />
+		          <Input
+		          	type="textarea"
+		          	name="howTo" 
+		          	placeholder="How to perform task" 
+		          	s={12} 
+		          	value={this.state.howTo}
+		          	onChange={this.handleInputChange} 
+		         	/>
+		        </Row>
+		        <Row>
+		          <Button 
+		          	waves='light' 
+		          	large={true}
+		          	type="submit"
+		          >Submit
+		          </Button>
+	        	</Row>
+	        </form>
+	      </div>  
 			</div>
 		);
 	}
 
 }
 
-export default Things
+export default Things;
