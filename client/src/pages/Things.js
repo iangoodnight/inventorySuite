@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Input, Button } from "react-materialize";
+import Expand from "../components/Expand";
 import API from "../utils/API";
 
 class Things extends Component {
@@ -58,6 +59,16 @@ class Things extends Component {
 	render() {
 		return (
 			<div className="container">
+				{this.state.things.length ? (
+					<div>
+					{this.state.things.map(thing => (
+						<Expand task={item.task} howTo={item.howTo} key={item.id}/>
+					))}
+				) : (
+				<div>
+				  <h3> Uh-oh, looks like we are having some problems finding what you are looking for! </h3>
+				</div>
+				)}
 				<form onSubmit={this.handleSubmit}>
 					<Row>
 	          <Input
