@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Row, Input, Button } from "react-materialize";
 import Expand from "../components/Expand";
+import ExpandItem from "../components/ExpandItem";
 import API from "../utils/API";
 
 class Things extends Component {
@@ -60,11 +61,11 @@ class Things extends Component {
 		return (
 			<div className="container">
 				{this.state.things.length ? (
-					<div>
+					<Expand>
 					{this.state.things.map(thing => (
-						<Expand task={thing.task} howTo={thing.howTo} key={thing._id}/>
+						<ExpandItem task={thing.task} howTo={thing.howTo} key={thing._id}/>
 					))}
-					</div>
+					</Expand>
 				) : (
 				<div>
 				  <h3> Uh-oh, looks like we are having some problems finding what you are looking for! </h3>
