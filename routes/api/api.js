@@ -8,4 +8,10 @@ router
 	.get(thingsController.findAll)
 	.post(thingsController.create);
 
+// Matched with "api/things/:id"
+router
+	.route("/things/:id")
+	.put(thingsController.update)
+	.get(thingsController.remove)
+	
 module.exports = router;

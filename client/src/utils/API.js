@@ -7,5 +7,13 @@ export default {
 
 	getThings: function(){
 		return axios.get("/api/things");
+	},
+
+	changeThings: function(){
+		return axios.put("/api/things/" + id + "/", data);
+	},
+
+	deleteThings: function(){
+		return axios.get("/api/things/", id);
 	}
 };
