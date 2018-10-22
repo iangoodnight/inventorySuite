@@ -18,7 +18,7 @@ module.exports = {
 
 	update: function(req, res) {
 		db.Things
-			.findByIdAndUpdate({ _id: ObjectId(req.params.id) }, { $set: { "howTo": req.body }})
+			.findByIdAndUpdate({ _id: req.params.id }, { $set: req.body })
 			.then(dbModel => res.json(dbModel))
 			.catch(err => res.status(422).json(err));
 	},

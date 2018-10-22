@@ -23,7 +23,7 @@ app.use(express.static("client/build"));
 // Add routes, both API and view
 app.use(routes);
 // Custom error handling middleware that logs the error to console, then renders an error page describing the error.
-app.use((err, req, res, next) => {
+app.use((error, req, res, next) => {
 	console.error(error);
 	res.json({
 		error

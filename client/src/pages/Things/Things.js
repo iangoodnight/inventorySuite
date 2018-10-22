@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Row, Input, Button } from "react-materialize";
-import Expand from "../../components/Expand";
+import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
+// import Expand from "../../components/Expand";
 import API from "../../utils/API";
 import "./Things.css";
 
@@ -11,14 +11,24 @@ class Things extends Component {
 		this.state = {
 			things: [],
 			task: "",
-			howTo: ""
+			howTo: "",
+			modalTask: "",
+			modalHowTo: "",
+			didSwitchParentObject: true
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.updateState = this.updateState.bind(this);
+		this.handleUpdate = this.handleUpdate.bind(this);
+		// this.didSwitchParentObject = this.didSwitchParentObject.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleInputChange(e) {
 		this.setState({ [e.target.name] : e.target.value });
+	}
+
+	updateState(e) {
+		console.log("e.target: ", e.target);
 	}
 
 	handleSubmit = event => {
@@ -27,7 +37,7 @@ class Things extends Component {
 		const data = {
 			task: this.state.task,
 			howTo: this.state.howTo
-		}
+		};
 		// to be used later with the withUser services
 		// const { history } = this.props;
 		console.log("Saving data: ", data);
@@ -43,6 +53,34 @@ class Things extends Component {
 		this.loadThings();
 	}
 
+	handleUpdate = event => {
+		event.preventDefault();
+		const id = event.target.getAttribute('thingid');
+		const rawData = {
+			task: this.state.modalTask,
+			howTo: this.state.modalHowTo
+		};
+		const removeFalsy = obj => {
+			let newObj = {};
+			Object.keys(obj).forEach((prop) => {
+				if (obj[prop]) { newObj[prop] = obj[prop];
+				}
+			})
+			return newObj;
+		}
+		const data = removeFalsy(rawData);
+		API.changeThings(id, data)
+			.then(res => {
+				console.log("Updated successfully");
+				this.setState({
+					modalTask: "",
+					modalHowTo: ""
+				});
+			})
+			.catch(err => console.log("changeThings: ", err));
+		this.loadThings();
+	}
+
 	loadThings = () => {
 		API.getThings()
 			.then(res => {
@@ -54,16 +92,25 @@ class Things extends Component {
 			.catch(err => console.log("error getting things: ", err));
 	}
 
-	deleteThings = (id) => {
-		API.deleteThings(id)
+	deleteThings = (data) => {
+		const delId = data._id;
+		API.deleteThings(delId)
 			.then(res => {
-				console.log("deleting things: ", id);
+				console.log("deleting things: ", delId);
+				this.loadThings();
 			})
 			.catch(err => console.log("error deleting things: ", err));
 	}
 
 	componentDidMount() {
 		this.loadThings();
+	}
+
+	componentDidUpdate () {
+		if (this.didSwitchParentObject) {
+			this.didSwitchParentObject = false;
+			this.refs.modalTask = this.state.modalTask;
+		}
 	}
 
 	render() {
@@ -73,11 +120,56 @@ class Things extends Component {
 					<h4>Things to Remember</h4>
 				</div>
 				{this.state.things.length ? (
-					<div>
+					<Collapsible>
 					{this.state.things.map((thing, i) => (
-						<Expand task={thing} key={thing._id} onClick={this.deleteThings} />
+						<CollapsibleItem header={thing.task} icon='place' key={thing._id}>
+							<Row className="displayHowTo">
+								<pre>{thing.howTo}</pre>
+							</Row>
+							<Row className="action-buttons">
+								<Modal
+									header={thing.task}
+									trigger={
+										<Button 
+											className="actions col s1 offset-s9"
+											thingid={thing._id}
+											onClick={this.updateState}
+											>Update
+										</Button>}
+									actions={
+										<div>
+											<form thingid={thing._id} onSubmit={this.handleUpdate} >
+												<Input
+													placeholder={thing.task}
+													ref="modalTask"
+													task={thing.task}
+													name="modalTask"
+													defaultValue={thing.task}						
+													onBlur= {this.handleInputChange}
+												/>
+												<Input
+													type="textarea"
+													ref="modalHowTo"
+													placeholder={thing.howTo}
+													howto={thing.howTo}
+													name="modalHowTo"
+													defaultValue={thing.howTo}
+													onBlur= {this.handleInputChange}
+												/>
+												<Button 
+													modal="close"
+													className="actions"
+													>Update
+												</Button>
+											</form>
+										</div>
+									}>
+								</Modal>
+								<Button className="actions col s1 red" onClick={this.deleteThings.bind(this, thing)}>Delete</Button>
+							</Row>
+						</CollapsibleItem>					
 					))}
-					</div>
+					</Collapsible>
 				) : (
 				<div>
 				  <h3> Uh-oh, looks like we are having some problems finding what you are looking for! </h3>

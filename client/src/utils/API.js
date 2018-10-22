@@ -10,10 +10,10 @@ export default {
 	},
 
 	changeThings: function(id, data){
-		return axios.put("/api/things/" + id + "/", data);
+		return axios.put("/api/things/" + id, data);
 	},
 
-	deleteThings: function(id){
-		return axios.get("/api/things/", id);
+	deleteThings: function(delId){
+		return axios.get("/api/things/" + delId);
 	}
 };
