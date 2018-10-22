@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
-// import Expand from "../../components/Expand";
 import API from "../../utils/API";
 import "./Things.css";
 
@@ -17,18 +16,12 @@ class Things extends Component {
 			didSwitchParentObject: true
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
-		this.updateState = this.updateState.bind(this);
 		this.handleUpdate = this.handleUpdate.bind(this);
-		// this.didSwitchParentObject = this.didSwitchParentObject.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleInputChange(e) {
 		this.setState({ [e.target.name] : e.target.value });
-	}
-
-	updateState(e) {
-		console.log("e.target: ", e.target);
 	}
 
 	handleSubmit = event => {

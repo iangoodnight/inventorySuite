@@ -1,3 +1,4 @@
 module.exports = {
-	Things: require("./Things")
+	Things: require("./Things"),
+	Computers: require("./Computers")
 };
