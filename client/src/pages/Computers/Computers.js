@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
 import "./Computers.css";
+const moment = require("moment");
 
 class Computers extends Component {
 
@@ -97,6 +98,7 @@ class Computers extends Component {
 			})
 			.catch(err => console.log("submitComputers: ", err));
 		this.loadComputers();		
+
 	}
 
 	loadComputers = () => {
@@ -120,13 +122,68 @@ class Computers extends Component {
 			.catch(err => console.log("error deleting computers: ", err));
 	}
 
-	// componentDidMount() {
-	// 	this.loadComputers();
-	// }
+	componentDidMount() {
+		this.loadComputers();
+	}
 
 	render() {
 		return (
 			<div className="container">
+				<div className="container">
+					<h4>Completed PCs</h4>					
+				</div>
+				{this.state.computers.length ? (
+					<Collapsible>
+					{this.state.computers.map((computer, i) => (
+						<CollapsibleItem header={computer.pc_name} icon='place' key={computer._id}>
+							<Row>
+								<pre>
+								User: {computer.user}<br/>
+								Department: {computer.department}<br/>
+								Location: {computer.location}<br/>
+								Model: {computer.model}<br/>
+								Serial Number: {computer.serial_number}<br/>
+								Mac Address: {computer.mac_address}<br/>
+								Mac Address 2: {computer.mac_address_2}<br/>
+								PC Description: {computer.pc_description}<br/>
+								PC Name: {computer.pc_name}<br/>
+								GPupdate: {String(computer.GPupdate)}<br/>
+								RDP Wrap: {String(computer.RDPwrap)}<br/>
+								VNC: {String(computer.VNC)}<br/>
+								Bluetech: {String(computer.bluetech)}<br/>
+								OS WOL: {String(computer.OS_WOL)}<br/>
+								Bios WOL: {String(computer.bios_WOL)}<br/>
+								Labeled: {String(computer.labeled)}<br/>
+								Completed: {String(computer.completed)}<br/>
+								Notes: {computer.notes}<br/>
+								Last Verified: {moment(computer.last_verified).format("MMMM-DD-YY")}<br/>
+								</pre>
+							</Row>
+							<Row className="action-buttons">
+								<Modal
+									header={computer.pc_description}
+									trigger={
+										<Button
+											className="actions col s1 offset-s9"
+											computerid={computer._id}
+											>Update
+										</Button>}
+									actions={
+										<div>
+										form goes here.
+										</div>
+									}>
+								</Modal>
+								<Button className="actions col s1 red">Delete</Button>
+							</Row>
+						</CollapsibleItem>
+					))}
+					</Collapsible>
+				) : (
+				<div>
+					<h3> Uh-oh, looks like we are having some problems finding what you are looking for.</h3>
+				</div>
+				)}
 				<div>
 					<form onSubmit={this.handleSubmit}>
 						<Row>
