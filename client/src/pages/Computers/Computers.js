@@ -18,14 +18,14 @@ class Computers extends Component {
 			mac_address_2: "",
 			pc_description: "",
 			pc_name: "",
-			GPupdate: "",
-			RDPwrap: "",
-			VNC: "",
-			bluetech: "",
-			OS_WOL: "",
-			bios_WOL: "",
-			labeled: "",
-			completed: "",
+			GPupdate: false,
+			RDPwrap: false,
+			VNC: false,
+			bluetech: false,
+			OS_WOL: false,
+			bios_WOL: false,
+			labeled: false,
+			completed: false,
 			notes: "",
 			last_verified: ""	
 		};
@@ -34,7 +34,13 @@ class Computers extends Component {
 	}
 
 	handleInputChange(e) {
-		this.setState({ [e.target.name] : e.target.value });
+		const target = e.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+		console.log("handling input change where name: ", name, " and value: ", value);
+		this.setState({ 
+			[name] : value 
+		});
 	}
 
 	handleSubmit = event => {
@@ -77,14 +83,14 @@ class Computers extends Component {
 					mac_address_2: "",
 					pc_description: "",
 					pc_name: "",
-					GPupdate: "",
-					RDPwrap: "",
-					VNC: "",
-					bluetech: "",
-					OS_WOL: "",
-					bios_WOL: "",
-					labeled: "",
-					completed: "",
+					GPupdate: false,
+					RDPwrap: false,
+					VNC: false,
+					bluetech: false,
+					OS_WOL: false,
+					bios_WOL: false,
+					labeled: false,
+					completed: false,
 					notes: "",
 					last_verified: ""					
 				});
@@ -192,7 +198,7 @@ class Computers extends Component {
 								name="GPupdate"
 								s={3}
 								type="checkbox"
-								value={this.state.GPupdate}
+								checked={this.state.GPupdate}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -200,7 +206,7 @@ class Computers extends Component {
 								name="RDPwrap"
 								s={3}
 								type="checkbox"
-								value={this.state.RDPwrap}
+								checked={this.state.RDPwrap}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -208,7 +214,7 @@ class Computers extends Component {
 								name="VNC"
 								s={3}
 								type="checkbox"
-								value={this.state.VNC}
+								checked={this.state.VNC}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -216,7 +222,7 @@ class Computers extends Component {
 								name="bluetech"
 								s={3}
 								type="checkbox"
-								value={this.state.bluetech}
+								checked={this.state.bluetech}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -224,7 +230,7 @@ class Computers extends Component {
 								name="OS_WOL"
 								s={3}
 								type="checkbox"
-								value={this.state.OS_WOL}
+								checked={this.state.OS_WOL}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -232,7 +238,7 @@ class Computers extends Component {
 								name="bios_WOL"
 								s={3}
 								type="checkbox"
-								value={this.state.bios_WOL}
+								checked={this.state.bios_WOL}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -240,7 +246,7 @@ class Computers extends Component {
 								name="labeled"
 								s={3}
 								type="checkbox"
-								value={this.state.labeled}
+								checked={this.state.labeled}
 								onChange={this.handleInputChange}
 							/>
 							<Input
@@ -248,7 +254,7 @@ class Computers extends Component {
 								name="completed"
 								s={3}
 								type="checkbox"
-								value={this.state.completed}
+								checked={this.state.completed}
 								onChange={this.handleInputChange}
 							/>
 							<Input 
