@@ -105,6 +105,7 @@ class Computers extends Component {
 		API.getComputers()
 			.then(res => {
 				console.log("getting computers: ", res.data);
+				console.log("current state: ", this.state);
 				this.setState({
 					computers: res.data
 				})
