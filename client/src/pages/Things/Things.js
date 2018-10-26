@@ -126,12 +126,14 @@ class Things extends Component {
 										<Button 
 											className="actions col s1 offset-s9"
 											thingid={thing._id}
-											onClick={this.updateState}
 											>Update
 										</Button>}
 									actions={
 										<div>
-											<form thingid={thing._id} onSubmit={this.handleUpdate} >
+											<form 
+												thingid={thing._id} 
+												onSubmit={this.handleUpdate} 
+											>
 												<Input
 													placeholder={thing.task}
 													ref="modalTask"
@@ -158,7 +160,11 @@ class Things extends Component {
 										</div>
 									}>
 								</Modal>
-								<Button className="actions col s1 red" onClick={this.deleteThings.bind(this, thing)}>Delete</Button>
+								<Button 
+									className="actions col s1 red" 
+									onClick={this.deleteThings.bind(this, thing)}
+								>Delete
+								</Button>
 							</Row>
 						</CollapsibleItem>					
 					))}

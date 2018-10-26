@@ -28,7 +28,26 @@ class Computers extends Component {
 			labeled: false,
 			completed: false,
 			notes: "",
-			last_verified: ""	
+			last_verified: "",
+			modalUser: "",
+			modalDepartment: "",
+			modalLocation: "",
+			modalModel: "",
+			modalSerial_number: "",
+			modalMac_address: "",
+			modalMac_address_2: "",
+			modalPc_description: "",
+			modalPc_name: "",
+			modalGPupdate: false,
+			modalRDPwrap: false,
+			modalVNC: false,
+			modalBluetech: false,
+			modalOS_WOL: false,
+			modalBios_WOL: false,
+			modalLabeled: false,
+			modalCompleted: false,
+			modalNotes: "",
+			modalLast_verified: ""	
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
@@ -113,6 +132,71 @@ class Computers extends Component {
 			.catch(err => console.log("error getting computers: ", err));
 	}
 
+	handleUpdate = event => {
+		event.preventDefault();
+		const id = event.target.getAttribute('computerid');
+		const date = this.state.modalLast_verified ? moment(this.state.modalLast_verified).format() : "";
+		const rawData = {
+			user: this.state.modalUser,
+			department: this.state.modalDepartment,
+			location: this.state.modalLocation,
+			model: this.state.modalModel,
+			serial_number: this.state.modalSerial_number,
+			mac_address: this.state.modalMac_address,
+			mac_address_2: this.state.modalMac_address_2,
+			pc_description: this.state.modalPc_description,
+			pc_name: this.state.modalPc_name,
+			GPupdate: this.state.modalGPupdate,
+			RDPwrap: this.state.modalRDPwrap,
+			VNC: this.state.modalVNC,
+			bluetech: this.state.modalBluetech,
+			OS_WOL: this.state.modalOS_WOL,
+			bios_WOL: this.state.modalBios_WOL,
+			labeled: this.state.modalLabeled,
+			completed: this.state.modalLocation,
+			notes: this.state.modalNotes,
+			last_verified: date
+		};
+		console.log("rawData: ", rawData);
+		const removeFalsy = obj => {
+			let newObj = {};
+			Object.keys(obj).forEach((prop) => {
+				if (obj[prop]) { newObj[prop] = obj[prop];
+				}
+			})
+			return newObj;
+		}
+		const data = removeFalsy(rawData);
+		console.log("data: ", data);
+		API.changeComputers(id, data)
+			.then(res => {
+				console.log("Updated successfully");
+				this.setState({
+					modalUser: "",
+					modalDepartment: "",
+					modalLocation: "",
+					modalModel: "",
+					modalSerial_number: "",
+					modalMac_address: "",
+					modalMac_address_2: "",
+					modalPc_description: "",
+					modalPc_name: "",
+					modalGPupdate: false,
+					modalRDPwrap: false,
+					modalVNC: false,
+					modalBluetech: false,
+					modalOS_WOL: false,
+					modalBios_WOL: false,
+					modalLabeled: false,
+					modalCompleted: false,
+					modalNotes: "",
+					modalLast_verified: ""
+				});
+			})
+			.catch(err => console.log("changeComputers: ", err));
+		this.loadComputers();
+	}
+
 	deleteComputers = (data) => {
 		const delId = data._id;
 		API.deleteComputers(delId)
@@ -162,7 +246,8 @@ class Computers extends Component {
 							</Row>
 							<Row className="action-buttons">
 								<Modal
-									header={computer.pc_description}
+									style={{height: "200%"}}
+									header={computer.pc_name}
 									trigger={
 										<Button
 											className="actions col s1 offset-s9"
@@ -171,11 +256,170 @@ class Computers extends Component {
 										</Button>}
 									actions={
 										<div>
-										form goes here.
+											<form 
+												computerid={computer._id}
+												onSubmit={this.handleUpdate}
+											>
+												<Row>
+													<Input
+														label="User"
+														name="modalUser"
+														s={4}
+														defaultValue={computer.user}
+														onChange={this.handleInputChange} 
+													/>
+													<Input
+														label="Department"
+														name="modalDepartment"
+														s={4}
+														defaultValue={computer.department}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Location"
+														name="modalLocation"
+														s={4}
+														defaultValue={computer.location}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Model"
+														name="modalModel"
+														s={6}
+														defaultValue={computer.model}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Serial Number"
+														name="modalSerial_number"
+														s={6}
+														defaultValue={computer.serial_number}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Mac Address"
+														name="modalMac_address"
+														s={6}
+														defaultValue={computer.mac_address}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Mac Address 2"
+														name="modalMac_address_2"
+														s={6}
+														defaultValue={computer.mac_address_2}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="PC Description"
+														name="modalPc_description"
+														s={6}
+														defaultValue={computer.pc_description}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="PC Name"
+														name="modalPc_name"
+														s={6}
+														defaultValue={computer.pc_name}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="GPupdate"
+														name="modalGPupdate"
+														s={3}
+														type="checkbox"
+														checked={computer.GPupdate}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="RDP Wrap"
+														name="modalRDPwrap"
+														s={3}
+														type="checkbox"
+														checked={computer.RDPwrap}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="VNC"
+														name="modalVNC"
+														s={3}
+														type="checkbox"
+														checked={computer.VNC}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Bluetech"
+														name="modalBluetech"
+														s={3}
+														type="checkbox"
+														checked={computer.bluetech}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="OS WOL"
+														name="modalOS_WOL"
+														s={3}
+														type="checkbox"
+														checked={computer.OS_WOL}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Bios WOL"
+														name="modalBios_WOL"
+														s={3}
+														type="checkbox"
+														checked={computer.bios_WOL}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Labeled"
+														name="modalLabeled"
+														s={3}
+														type="checkbox"
+														checked={computer.labeled}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="Completed"
+														name="modalCompleted"
+														s={3}
+														type="checkbox"
+														checked={computer.completed}
+														onChange={this.handleInputChange}
+													/>
+													<Input 
+														label="notes"
+														name="modalNotes"
+														s={12}
+														type="textarea"
+														defaultValue={computer.notes}
+														onChange={this.handleInputChange}
+													/>
+													<Input 
+														label="Last Verified"
+														name="modalLast_verified"
+														s={12}
+														defaultValue={moment(computer.last_verified).format("MM-DD-YY")}
+														onChange={this.handleInputChange}
+													/>
+												</Row>
+												<Row>
+													<Button
+														modal="close"
+														className="actions col s2 red"
+													>Update
+													</Button>
+												</Row>
+											</form>
 										</div>
 									}>
 								</Modal>
-								<Button className="actions col s1 red">Delete</Button>
+								<Button 
+									className="actions col s1 red" 
+									onClick={this.deleteComputers.bind(this, computer)}
+								>Delete
+								</Button>
 							</Row>
 						</CollapsibleItem>
 					))}
