@@ -38,7 +38,7 @@ class Computers extends Component {
 		const target = e.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		console.log("handling input change where name: ", name, " and value: ", value);
+		// console.log("handling input change where name: ", name, " and value: ", value);
 		this.setState({ 
 			[name] : value 
 		});
