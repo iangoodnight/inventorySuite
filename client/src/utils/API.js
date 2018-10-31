@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export default {
+	// Computers functions
 	submitComputers: function(data) {
 		return axios.post("/api/computers", data);
 	},
@@ -16,7 +17,7 @@ export default {
 	deleteComputers: function(delId) {
 		return axios.get("/api/computers/" + delId);
 	},
-
+	// Completed PCs functions
 	submitCompleted: function(data) {
 		return axios.post("api/completed", data);
 	},
@@ -32,7 +33,23 @@ export default {
 	deleteCompleted: function(delId) {
 		return axios.get("/api/completed/" + delId);
 	},
+	// Linux functions
+	submitLinux: function(data) {
+		return axios.post("/api/linux", data);
+	},
 
+	getLinux: function(){
+		return axios.get("/api/linux");
+	},
+
+	changeLinux: function(id, data){
+		return axios.put("/api/linux/" + id, data);
+	},
+
+	deleteLinux: function(delId){
+		return axios.get("/api/linux/" + delId);
+	},
+	// Things functions
 	submitThings: function(data) {
 		return axios.post("/api/things", data);
 	},
@@ -47,5 +64,21 @@ export default {
 
 	deleteThings: function(delId){
 		return axios.get("/api/things/" + delId);
+	},
+	// ChromeMachines functions
+	submitChrome: function(data) {
+		return axios.post("/api/chrome", data);
+	},
+
+	getChrome: function(){
+		return axios.get("/api/chrome");
+	},
+
+	changeChrome: function(id, data){
+		return axios.put("/api/chrome/" + id, data);
+	},
+
+	deleteChrome: function(delId){
+		return axios.get("/api/chrome/" + delId);
 	}
 };

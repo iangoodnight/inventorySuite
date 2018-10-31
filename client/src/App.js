@@ -6,6 +6,8 @@ import Wrapper from "./components/Wrapper";
 import Things from "./pages/Things";
 import Computers from "./pages/Computers";
 import Completed from "./pages/Completed";
+import Linux from "./pages/Linux";
+import Chrome from "./pages/Chrome";
 import Nav from "./components/Nav";
 
 class App extends Component {
@@ -21,7 +23,9 @@ class App extends Component {
                   <Route exact path="/" component={Things} />
                   <Route exact path="/things" component={Things} />
                   <Route exact path="/completed" component={Completed} />
-                  <Route exact path="/computers" component={Computers} />                  
+                  <Route exact path="/computers" component={Computers} />
+                  <Route exact path="/linux" component={Linux} /> 
+                  <Route exact path="/chrome" component={Chrome} />                                    
                 </Switch>
               </div>  
             </Wrapper>

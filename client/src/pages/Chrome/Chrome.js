@@ -1,51 +1,33 @@
 import React, { Component } from "react";
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
-import "./Computers.css";
+import "./Chrome.css";
 const moment = require("moment");
 
-class Computers extends Component {
+class Chrome extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			computers: [],
 			user: "",
-			department: "",
 			location: "",
-			model: "",
 			serial_number: "",
 			mac_address: "",
 			mac_address_2: "",
-			pc_description: "",
-			pc_name: "",
-			GPupdate: false,
-			RDPwrap: false,
-			VNC: false,
-			bluetech: false,
-			OS_WOL: false,
-			bios_WOL: false,
+			asset_ID: "",
 			labeled: false,
-			completed: false,
+			ram_size: "",
 			notes: "",
 			last_verified: "",
 			modalUser: "",
-			modalDepartment: "",
 			modalLocation: "",
-			modalModel: "",
 			modalSerial_number: "",
 			modalMac_address: "",
 			modalMac_address_2: "",
-			modalPc_description: "",
-			modalPc_name: "",
-			modalGPupdate: false,
-			modalRDPwrap: false,
-			modalVNC: false,
-			modalBluetech: false,
-			modalOS_WOL: false,
-			modalBios_WOL: false,
+			modalAsset_ID: "",
 			modalLabeled: false,
-			modalCompleted: false,
+			modalRam_size: "",
 			modalNotes: "",
 			modalLast_verified: ""	
 		};
@@ -68,68 +50,50 @@ class Computers extends Component {
 		console.log("this.state: ", this.state);
 		const data = {
 			user: this.state.user,
-			department: this.state.department,
 			location: this.state.location,
-			model: this.state.model,
 			serial_number: this.state.serial_number,
 			mac_address: this.state.mac_address,
 			mac_address_2: this.state.mac_address_2,
-			pc_description: this.state.pc_description,
-			pc_name: this.state.pc_name,
-			GPupdate: this.state.GPupdate,
-			RDPwrap: this.state.RDPwrap,
-			VNC: this.state.VNC,
-			bluetech: this.state.bluetech,
-			OS_WOL: this.state.OS_WOL,
-			bios_WOL: this.state.bios_WOL,
+			asset_ID: this.state.asset_ID,
 			labeled: this.state.labeled,
-			completed: this.state.completed,
+			ram_size: this.state.ram_size,
 			notes: this.state.notes,
 			last_verified: this.state.last_verified	
 		};
 		// to be used later with the withUser services
 		// const { history } = this.props;
 		console.log("Saving data: ", data);
-		API.submitComputers(data)
+		API.submitChrome(data)
 			.then(res => {
 				console.log("Uploaded successfully");
 				this.setState({
 					user: "",
-					department: "",
 					location: "",
-					model: "",
 					serial_number: "",
 					mac_address: "",
 					mac_address_2: "",
-					pc_description: "",
-					pc_name: "",
-					GPupdate: false,
-					RDPwrap: false,
-					VNC: false,
-					bluetech: false,
-					OS_WOL: false,
-					bios_WOL: false,
+					asset_ID: "",
 					labeled: false,
-					completed: false,
+					ram_size: "",
 					notes: "",
 					last_verified: ""					
 				});
 			})
-			.catch(err => console.log("submitComputers: ", err));
-		this.loadComputers();		
+			.catch(err => console.log("submitChrome: ", err));
+		this.loadChrome();		
 
 	}
 
-	loadComputers = () => {
-		API.getComputers()
+	loadChrome = () => {
+		API.getChrome()
 			.then(res => {
-				console.log("getting computers: ", res.data);
+				console.log("getting chrome machines: ", res.data);
 				console.log("current state: ", this.state);
 				this.setState({
 					computers: res.data
 				})
 			})
-			.catch(err => console.log("error getting computers: ", err));
+			.catch(err => console.log("error getting chrome machines: ", err));
 	}
 
 	handleUpdate = event => {
@@ -138,22 +102,13 @@ class Computers extends Component {
 		const date = this.state.modalLast_verified ? moment(this.state.modalLast_verified).format() : "";
 		const rawData = {
 			user: this.state.modalUser,
-			department: this.state.modalDepartment,
 			location: this.state.modalLocation,
-			model: this.state.modalModel,
 			serial_number: this.state.modalSerial_number,
 			mac_address: this.state.modalMac_address,
 			mac_address_2: this.state.modalMac_address_2,
-			pc_description: this.state.modalPc_description,
-			pc_name: this.state.modalPc_name,
-			GPupdate: this.state.modalGPupdate,
-			RDPwrap: this.state.modalRDPwrap,
-			VNC: this.state.modalVNC,
-			bluetech: this.state.modalBluetech,
-			OS_WOL: this.state.modalOS_WOL,
-			bios_WOL: this.state.modalBios_WOL,
+			asset_ID: this.state.modalAsset_ID,
 			labeled: this.state.modalLabeled,
-			completed: this.state.modalCompleted,
+			ram_size: this.state.modalRam_size,
 			notes: this.state.modalNotes,
 			last_verified: date
 		};
@@ -168,47 +123,38 @@ class Computers extends Component {
 		}
 		const data = removeFalsy(rawData);
 		console.log("data: ", data);
-		API.changeComputers(id, data)
+		API.changeChrome(id, data)
 			.then(res => {
 				console.log("Updated successfully");
 				this.setState({
 					modalUser: "",
-					modalDepartment: "",
 					modalLocation: "",
-					modalModel: "",
 					modalSerial_number: "",
 					modalMac_address: "",
 					modalMac_address_2: "",
-					modalPc_description: "",
-					modalPc_name: "",
-					modalGPupdate: false,
-					modalRDPwrap: false,
-					modalVNC: false,
-					modalBluetech: false,
-					modalOS_WOL: false,
-					modalBios_WOL: false,
+					modalAsset_ID: "",
 					modalLabeled: false,
-					modalCompleted: false,
+					modalRam_size: "",
 					modalNotes: "",
 					modalLast_verified: ""
 				});
 			})
-			.catch(err => console.log("changeComputers: ", err));
-		this.loadComputers();
+			.catch(err => console.log("changeChrome: ", err));
+		this.loadChrome();
 	}
 
-	deleteComputers = (data) => {
+	deleteChrome = (data) => {
 		const delId = data._id;
-		API.deleteComputers(delId)
+		API.deleteChrome(delId)
 			.then(res => {
 				console.log("deleting computers: ", delId);
-				this.loadComputers();
+				this.loadChrome();
 			})
-			.catch(err => console.log("error deleting computers: ", err));
+			.catch(err => console.log("error deleting chrome machines: ", err));
 	}
 
 	componentDidMount() {
-		this.loadComputers();
+		this.loadChrome();
 	}
 
 	render() {
@@ -216,32 +162,23 @@ class Computers extends Component {
 			<div className="container">
 				<div className="container">
 					<Row>
-						<h4>Computers</h4>
+						<h4>Chrome Machines</h4>
 					</Row>					
 				</div>
 				{this.state.computers.length ? (
 					<Collapsible>
 					{this.state.computers.map((computer, i) => (
-						<CollapsibleItem header={computer.pc_name} icon='place' key={computer._id}>
+						<CollapsibleItem header={computer.asset_ID} icon='place' key={computer._id}>
 							<Row>
 								<pre>
 								User: {computer.user}<br/>
-								Department: {computer.department}<br/>
 								Location: {computer.location}<br/>
-								Model: {computer.model}<br/>
 								Serial Number: {computer.serial_number}<br/>
 								Mac Address: {computer.mac_address}<br/>
 								Mac Address 2: {computer.mac_address_2}<br/>
-								PC Description: {computer.pc_description}<br/>
-								PC Name: {computer.pc_name}<br/>
-								GPupdate: {String(computer.GPupdate)}<br/>
-								RDP Wrap: {String(computer.RDPwrap)}<br/>
-								VNC: {String(computer.VNC)}<br/>
-								Bluetech: {String(computer.bluetech)}<br/>
-								OS WOL: {String(computer.OS_WOL)}<br/>
-								Bios WOL: {String(computer.bios_WOL)}<br/>
+								Asset ID: {computer.asset_ID}<br/>
 								Labeled: {String(computer.labeled)}<br/>
-								Completed: {String(computer.completed)}<br/>
+								Ram Size: {computer.ram_size}<br/>
 								Notes: {computer.notes}<br/>
 								Last Verified: {moment(computer.last_verified).format("MMMM-DD-YY")}<br/>
 								</pre>
@@ -249,7 +186,7 @@ class Computers extends Component {
 							<Row className="action-buttons">
 								<Modal
 									style={{height: "200%"}}
-									header={computer.pc_name}
+									header={computer.asset_id}
 									trigger={
 										<Button
 											className="actions col s1 offset-s9"
@@ -271,13 +208,6 @@ class Computers extends Component {
 														onChange={this.handleInputChange} 
 													/>
 													<Input
-														label="Department"
-														name="modalDepartment"
-														s={4}
-														defaultValue={computer.department}
-														onChange={this.handleInputChange}
-													/>
-													<Input
 														label="Location"
 														name="modalLocation"
 														s={4}
@@ -285,16 +215,9 @@ class Computers extends Component {
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Model"
-														name="modalModel"
-														s={6}
-														defaultValue={computer.model}
-														onChange={this.handleInputChange}
-													/>
-													<Input
 														label="Serial Number"
 														name="modalSerial_number"
-														s={6}
+														s={4}
 														defaultValue={computer.serial_number}
 														onChange={this.handleInputChange}
 													/>
@@ -313,81 +236,25 @@ class Computers extends Component {
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="PC Description"
-														name="modalPc_description"
-														s={6}
-														defaultValue={computer.pc_description}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="PC Name"
-														name="modalPc_name"
-														s={6}
-														defaultValue={computer.pc_name}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="GPupdate"
-														name="modalGPupdate"
-														s={3}
-														type="checkbox"
-														checked={computer.GPupdate}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="RDP Wrap"
-														name="modalRDPwrap"
-														s={3}
-														type="checkbox"
-														checked={computer.RDPwrap}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="VNC"
-														name="modalVNC"
-														s={3}
-														type="checkbox"
-														checked={computer.VNC}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="Bluetech"
-														name="modalBluetech"
-														s={3}
-														type="checkbox"
-														checked={computer.bluetech}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="OS WOL"
-														name="modalOS_WOL"
-														s={3}
-														type="checkbox"
-														checked={computer.OS_WOL}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="Bios WOL"
-														name="modalBios_WOL"
-														s={3}
-														type="checkbox"
-														checked={computer.bios_WOL}
+														label="Asset ID"
+														name="modalAsset_ID"
+														s={4}
+														defaultValue={computer.asset_ID}
 														onChange={this.handleInputChange}
 													/>
 													<Input
 														label="Labeled"
 														name="modalLabeled"
-														s={3}
+														s={4}
 														type="checkbox"
 														checked={computer.labeled}
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Completed"
-														name="modalCompleted"
-														s={3}
-														type="checkbox"
-														checked={computer.completed}
+														label="Ram Size"
+														name="modalRam_size"
+														s={4}
+														defaultValue={computer.ram_size}
 														onChange={this.handleInputChange}
 													/>
 													<Input 
@@ -419,7 +286,7 @@ class Computers extends Component {
 								</Modal>
 								<Button 
 									className="actions col s1 red" 
-									onClick={this.deleteComputers.bind(this, computer)}
+									onClick={this.deleteChrome.bind(this, computer)}
 								>Delete
 								</Button>
 							</Row>
@@ -445,13 +312,6 @@ class Computers extends Component {
 								onChange={this.handleInputChange} 
 							/>
 							<Input
-								placeholder="Department"
-								name="department"
-								s={4}
-								value={this.state.department}
-								onChange={this.handleInputChange}
-							/>
-							<Input
 								placeholder="Location"
 								name="location"
 								s={4}
@@ -459,16 +319,9 @@ class Computers extends Component {
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								placeholder="Model"
-								name="model"
-								s={6}
-								value={this.state.model}
-								onChange={this.handleInputChange}
-							/>
-							<Input
 								placeholder="Serial Number"
 								name="serial_number"
-								s={6}
+								s={4}
 								value={this.state.serial_number}
 								onChange={this.handleInputChange}
 							/>
@@ -487,81 +340,25 @@ class Computers extends Component {
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								placeholder="PC Description"
-								name="pc_description"
-								s={6}
-								value={this.state.pc_description}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								placeholder="PC Name"
-								name="pc_name"
-								s={6}
-								value={this.state.pc_name}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="GPupdate"
-								name="GPupdate"
-								s={3}
-								type="checkbox"
-								checked={this.state.GPupdate}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="RDP Wrap"
-								name="RDPwrap"
-								s={3}
-								type="checkbox"
-								checked={this.state.RDPwrap}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="VNC"
-								name="VNC"
-								s={3}
-								type="checkbox"
-								checked={this.state.VNC}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="Bluetech"
-								name="bluetech"
-								s={3}
-								type="checkbox"
-								checked={this.state.bluetech}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="OS WOL"
-								name="OS_WOL"
-								s={3}
-								type="checkbox"
-								checked={this.state.OS_WOL}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="Bios WOL"
-								name="bios_WOL"
-								s={3}
-								type="checkbox"
-								checked={this.state.bios_WOL}
+								placeholder="Asset ID"
+								name="asset_ID"
+								s={4}
+								value={this.state.asset_ID}
 								onChange={this.handleInputChange}
 							/>
 							<Input
 								label="Labeled"
 								name="labeled"
-								s={3}
+								s={4}
 								type="checkbox"
 								checked={this.state.labeled}
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								label="Completed"
-								name="completed"
-								s={3}
-								type="checkbox"
-								checked={this.state.completed}
+								label="Ram Size"
+								name="ram_size"
+								s={4}
+								value={this.state.SSH}
 								onChange={this.handleInputChange}
 							/>
 							<Input 
@@ -597,4 +394,4 @@ class Computers extends Component {
 
 }
 
-export default Computers;
+export default Chrome;
