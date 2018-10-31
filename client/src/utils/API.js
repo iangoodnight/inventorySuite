@@ -9,12 +9,28 @@ export default {
 		return axios.get("/api/computers");
 	},
 
-	changeComputers: function(id, data){
+	changeComputers: function(id, data) {
 		return axios.put("/api/computers/" + id, data);
 	},
 
-	deleteComputers: function(delId){
+	deleteComputers: function(delId) {
 		return axios.get("/api/computers/" + delId);
+	},
+
+	submitCompleted: function(data) {
+		return axios.post("api/completed", data);
+	},
+
+	getCompleted: function() {
+		return axios.get("/api/completed");
+	},
+
+	changeCompleted: function(id, data) {
+		return axios.put("/api/completed/" + id, data);
+	},
+
+	deleteCompleted: function(delId) {
+		return axios.get("/api/completed/" + delId);
 	},
 
 	submitThings: function(data) {
