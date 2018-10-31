@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
-import "./Computers.css";
+import "./Completed.css";
+
 const moment = require("moment");
 
-class Computers extends Component {
+class Completed extends Component {
 
 	constructor(props) {
 		super(props);
@@ -90,7 +91,7 @@ class Computers extends Component {
 		// to be used later with the withUser services
 		// const { history } = this.props;
 		console.log("Saving data: ", data);
-		API.submitComputers(data)
+		API.submitCompleted(data)
 			.then(res => {
 				console.log("Uploaded successfully");
 				this.setState({
@@ -115,21 +116,21 @@ class Computers extends Component {
 					last_verified: ""					
 				});
 			})
-			.catch(err => console.log("submitComputers: ", err));
-		this.loadComputers();		
+			.catch(err => console.log("submitCompleted: ", err));
+		this.loadCompleted();		
 
 	}
 
-	loadComputers = () => {
-		API.getComputers()
+	loadCompleted = () => {
+		API.getCompleted()
 			.then(res => {
-				console.log("getting computers: ", res.data);
+				console.log("getting completed: ", res.data);
 				console.log("current state: ", this.state);
 				this.setState({
 					computers: res.data
 				})
 			})
-			.catch(err => console.log("error getting computers: ", err));
+			.catch(err => console.log("error getting completed: ", err));
 	}
 
 	handleUpdate = event => {
@@ -168,7 +169,7 @@ class Computers extends Component {
 		}
 		const data = removeFalsy(rawData);
 		console.log("data: ", data);
-		API.changeComputers(id, data)
+		API.changeCompleted(id, data)
 			.then(res => {
 				console.log("Updated successfully");
 				this.setState({
@@ -193,22 +194,22 @@ class Computers extends Component {
 					modalLast_verified: ""
 				});
 			})
-			.catch(err => console.log("changeComputers: ", err));
-		this.loadComputers();
+			.catch(err => console.log("changeCompleted: ", err));
+		this.loadCompleted();
 	}
 
-	deleteComputers = (data) => {
+	deleteCompleted = (data) => {
 		const delId = data._id;
-		API.deleteComputers(delId)
+		API.deleteCompleted(delId)
 			.then(res => {
 				console.log("deleting computers: ", delId);
-				this.loadComputers();
+				this.loadCompleted();
 			})
 			.catch(err => console.log("error deleting computers: ", err));
 	}
 
 	componentDidMount() {
-		this.loadComputers();
+		this.loadCompleted();
 	}
 
 	render() {
@@ -216,7 +217,7 @@ class Computers extends Component {
 			<div className="container">
 				<div className="container">
 					<Row>
-						<h4>Computers</h4>
+						<h4>Completed PCs</h4>
 					</Row>					
 				</div>
 				{this.state.computers.length ? (
@@ -419,7 +420,7 @@ class Computers extends Component {
 								</Modal>
 								<Button 
 									className="actions col s1 red" 
-									onClick={this.deleteComputers.bind(this, computer)}
+									onClick={this.deleteCompleted.bind(this, computer)}
 								>Delete
 								</Button>
 							</Row>
@@ -597,4 +598,4 @@ class Computers extends Component {
 
 }
 
-export default Computers;
+export default Completed;
