@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom';
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
 import "./Things.css";
@@ -13,11 +14,13 @@ class Things extends Component {
 			howTo: "",
 			modalTask: "",
 			modalHowTo: "",
+			toggleState: false,
 			didSwitchParentObject: true
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleUpdate = this.handleUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.toggleAll = this.toggleAll.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -95,6 +98,40 @@ class Things extends Component {
 			.catch(err => console.log("error deleting things: ", err));
 	}
 
+	toggleAll() {
+		var x = document.getElementsByTagName("li");
+		var y = document.getElementsByClassName("collapsible-header");
+		var z = document.getElementsByClassName("collapsible-body");
+		console.log(this.state.toggleState);
+		if (!this.state.toggleState) {
+			for (let i of x) {
+				i.classList.add("active");
+			};
+			for (let j of y) {
+				j.classList.add("active");
+			};
+			for (let k of z) {
+				k.style.display = "block";
+			}; 
+			console.log("triggering toggle");
+		} else {
+			for (let i of x) {
+				i.classList.remove("active");
+			};
+			for (let j of y) {
+				j.classList.remove("active");
+			};
+			for (let k of z) {
+				k.style.display = "none";
+			}; 
+			console.log("triggering toggle");
+		}
+		this.setState({
+			toggleState: !this.state.toggleState
+		});
+		console.log("checking tag targets: ", x, y, z);
+	}
+
 	componentDidMount() {
 		this.loadThings();
 	}
@@ -104,18 +141,30 @@ class Things extends Component {
 			this.didSwitchParentObject = false;
 			this.refs.modalTask = this.state.modalTask;
 		}
+		// To allow for links on page
+	  let hash = this.props.location.hash.replace('#', '');
+    if (hash) {
+      let node = ReactDOM.findDOMNode(this.refs[hash]);
+      if (node) {
+        node.scrollIntoView();
+      }
+    }
 	}
 
 	render() {
 		return (
-			<div className="container">
+			<div className="container" ref="top">
 				<div className="container title">
 					<h4>Things to Remember</h4>
 				</div>
 				{this.state.things.length ? (
 					<Collapsible>
 					{this.state.things.map((thing, i) => (
-						<CollapsibleItem header={thing.task} icon='place' key={thing._id}>
+						<CollapsibleItem 
+							header={thing.task} 
+							icon='place' 
+							key={thing._id}
+						>
 							<Row className="displayHowTo">
 								<pre>{thing.howTo}</pre>
 							</Row>
@@ -175,7 +224,7 @@ class Things extends Component {
 				</div>
 				)}
 				<div>
-					<form onSubmit={this.handleSubmit}>
+					<form id="submit_form" ref="submit_form" onSubmit={this.handleSubmit}>
 						<Row>
 		          <Input
 		          	placeholder="Task"
@@ -202,6 +251,12 @@ class Things extends Component {
 		          </Button>
 	        	</Row>
 	        </form>
+	      </div>
+	      <div>
+					<Button floating fab='vertical' icon='find_in_page' className='red' large style={{bottom: '45px', right: '24px'}}>
+  					<Button floating icon='expand_more' onClick={this.toggleAll} node="a" href="#top" className='red'/>
+  					<Button floating icon='add' className='yellow darken-1' node="a" href="#submit_form"/>
+					</Button>
 	      </div>  
 			</div>
 		);
