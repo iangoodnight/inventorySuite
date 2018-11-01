@@ -2,36 +2,37 @@ import React, { Component } from "react";
 import ReactDOM from 'react-dom';
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
-import "./Chrome.css";
+import "./Cameras.css";
+
 const moment = require("moment");
 
-class Chrome extends Component {
+class Cameras extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			computers: [],
+			cameras: [],
 			toggle: false,
-			user: "",
 			location: "",
-			serial_number: "",
+			camera_name: "",
+			host_name: "",
 			mac_address: "",
-			mac_address_2: "",
-			asset_ID: "",
-			labeled: false,
-			ram_size: "",
+			model: "",
+			static_IP: "",
+			sd_card_size: "",
+			SNMP: false,
 			notes: "",
 			last_verified: "",
-			modal_user: "",
 			modal_location: "",
-			modal_serial_number: "",
+			modal_camera_name: "",
+			modal_host_name: "",
 			modal_mac_address: "",
-			modal_mac_address_2: "",
-			modal_asset_ID: "",
-			modal_labeled: false,
-			modal_ram_size: "",
+			modal_model: "",
+			modal_static_IP: "",
+			modal_sd_card_size: "",
+			modal_SNMP: false,
 			modal_notes: "",
-			modal_last_verified: ""	
+			modal_last_verified: ""
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleUpdate = this.handleUpdate.bind(this);
@@ -50,68 +51,67 @@ class Chrome extends Component {
 
 	handleSubmit = event => {
 		event.preventDefault();
-		console.log("this.state: ", this.state);
+		// console.log("this.state: ", this.state);
 		const data = {
-			user: this.state.user,
 			location: this.state.location,
-			serial_number: this.state.serial_number,
+			camera_name: this.state.camera_name,
+			host_name: this.state.host_name,
 			mac_address: this.state.mac_address,
-			mac_address_2: this.state.mac_address_2,
-			asset_ID: this.state.asset_ID,
-			labeled: this.state.labeled,
-			ram_size: this.state.ram_size,
+			model: this.state.model,
+			static_IP: this.state.static_IP,
+			sd_card_size: this.state.sd_card_size,
+			SNMP: this.state.SNMP,
 			notes: this.state.notes,
-			last_verified: this.state.last_verified	
+			last_verified: this.state.last_verified
 		};
 		// to be used later with the withUser services
 		// const { history } = this.props;
 		console.log("Saving data: ", data);
-		API.submitChrome(data)
+		API.submitCameras(data)
 			.then(res => {
 				console.log("Uploaded successfully");
 				this.setState({
-					user: "",
 					location: "",
-					serial_number: "",
+					camera_name: "",
+					host_name: "",
 					mac_address: "",
-					mac_address_2: "",
-					asset_ID: "",
-					labeled: false,
-					ram_size: "",
-					notes: "",
-					last_verified: ""					
+					model: "",
+					static_IP: "",
+					sd_card_size: "",
+					SNMP: false,
+					notes: ""				
 				});
 			})
-			.catch(err => console.log("submitChrome: ", err));
-		this.loadChrome();		
+			.catch(err => console.log("submitCameras: ", err));
+		this.loadCameras();		
 
 	}
 
-	loadChrome = () => {
-		API.getChrome()
+	loadCameras = () => {
+		API.getCameras()
 			.then(res => {
-				// console.log("getting chrome machines: ", res.data);
+				// console.log("getting cameras: ", res.data);
 				// console.log("current state: ", this.state);
 				this.setState({
-					computers: res.data
+					cameras: res.data
 				})
 			})
-			.catch(err => console.log("error getting chrome machines: ", err));
+			.catch(err => console.log("error getting cameras: ", err));
 	}
 
 	handleUpdate = event => {
 		event.preventDefault();
-		const id = event.target.getAttribute('computerid');
-		const date = this.state.modalLast_verified ? moment(this.state.modal_last_verified).format() : "";
+		const id = event.target.getAttribute('cameraid');
+		const date = this.state.modal_last_verified ? moment(this.state.modal_last_verified).format() : "";
 		const rawData = {
-			user: this.state.modal_user,
 			location: this.state.modal_location,
-			serial_number: this.state.modal_serial_number,
+			camera_name: this.state.modal_camera_name,
+			host_name: this.state.modal_host_name,
 			mac_address: this.state.modal_mac_address,
-			mac_address_2: this.state.modal_mac_address_2,
-			asset_ID: this.state.modal_asset_ID,
-			labeled: this.state.modal_labeled,
-			ram_size: this.state.modal_ram_size,
+			model: this.state.modal_model,
+			static_IP: this.state.modal_static_IP,
+			sd_card_size: this.state.modal_sd_card_size,
+			SNMP: this.state.modal_SNMP,
 			notes: this.state.modal_notes,
 			last_verified: date
 		};
@@ -126,41 +126,41 @@ class Chrome extends Component {
 		}
 		const data = removeFalsy(rawData);
 		console.log("data: ", data);
-		API.changeChrome(id, data)
+		API.changeCameras(id, data)
 			.then(res => {
 				console.log("Updated successfully");
 				this.setState({
-					modal_user: "",
 					modal_location: "",
-					modal_serial_number: "",
+					modal_camera_name: "",
+					modal_host_name: "",
 					modal_mac_address: "",
-					modal_mac_address_2: "",
-					modal_asset_ID: "",
-					modal_labeled: false,
-					modal_ram_size: "",
+					modal_model: "",
+					modal_static_IP: "",
+					modal_sd_card_size: "",
+					modal_SNMP: false,
 					modal_notes: "",
 					modal_last_verified: ""
 				});
 			})
-			.catch(err => console.log("changeChrome: ", err));
-		this.loadChrome();
+			.catch(err => console.log("changeCameras: ", err));
+		this.loadCameras();
 	}
 
-	deleteChrome = (data) => {
+	deleteCameras = (data) => {
 		const delId = data._id;
-		API.deleteChrome(delId)
+		API.deleteCameras(delId)
 			.then(res => {
-				console.log("deleting computers: ", delId);
-				this.loadChrome();
+				// console.log("deleting cameras: ", delId);
+				this.loadCameras();
 			})
-			.catch(err => console.log("error deleting chrome machines: ", err));
+			.catch(err => console.log("error deleting cameras: ", err));
 	}
 
 	toggleAll() {
 		var x = document.getElementsByTagName("li");
 		var y = document.getElementsByClassName("collapsible-header");
 		var z = document.getElementsByClassName("collapsible-body");
-		console.log(this.state.toggleState);
+		// console.log(this.state.toggleState);
 		if (!this.state.toggleState) {
 			for (let i of x) {
 				i.classList.add("active");
@@ -171,7 +171,7 @@ class Chrome extends Component {
 			for (let k of z) {
 				k.style.display = "block";
 			}; 
-			console.log("triggering toggle");
+			// console.log("triggering toggle");
 		} else {
 			for (let i of x) {
 				i.classList.remove("active");
@@ -182,7 +182,7 @@ class Chrome extends Component {
 			for (let k of z) {
 				k.style.display = "none";
 			}; 
-			console.log("triggering toggle");
+			// console.log("triggering toggle");
 		}
 		this.setState({
 			toggleState: !this.state.toggleState
@@ -190,7 +190,7 @@ class Chrome extends Component {
 	}
 
 	componentDidMount() {
-		this.loadChrome();
+		this.loadCameras();
 	}
 
 	componentDidUpdate () {
@@ -209,114 +209,114 @@ class Chrome extends Component {
 			<div className="container" ref="top">
 				<div className="container">
 					<Row>
-						<h4 className="page-header">Chrome Machines</h4>
+						<h4 className="page-header">Cameras</h4>
 					</Row>					
 				</div>
-				{this.state.computers.length ? (
+				{this.state.cameras.length ? (
 					<Collapsible>
-					{this.state.computers.map((computer, i) => (
-						<CollapsibleItem header={computer.asset_ID} icon='place' key={computer._id}>
+					{this.state.cameras.map((camera, i) => (
+						<CollapsibleItem header={camera.static_IP} icon='place' key={camera._id}>
 							<Row>
 								<pre>
-								User: {computer.user}<br/>
-								Location: {computer.location}<br/>
-								Serial Number: {computer.serial_number}<br/>
-								Mac Address: {computer.mac_address}<br/>
-								Mac Address 2: {computer.mac_address_2}<br/>
-								Asset ID: {computer.asset_ID}<br/>
-								Labeled: {String(computer.labeled)}<br/>
-								Ram Size: {computer.ram_size}<br/>
-								Notes: {computer.notes}<br/>
-								Last Verified: {moment(computer.last_verified).format("MMMM-DD-YY")}<br/>
+								Location: {camera.location}<br/>
+								Camera Name in Axis: {camera.camera_name}<br/>
+								Host Name: {camera.host_name}<br/>
+								Mac Address: {camera.mac_address}<br/>
+								Model: {camera.model}<br/>
+								Static IP: {camera.static_IP}<br/>
+								SD Card Size: {camera.sd_card_size}<br/>
+								SNMP: {String(camera.SNMP)}<br/>
+								Notes: {camera.notes}<br/>
+								Last Verified: {moment(camera.last_verified).format("MMMM-DD-YY")}<br/>
 								</pre>
 							</Row>
 							<Row className="action-buttons">
 								<Modal
 									style={{height: "200%"}}
-									header={computer.asset_id}
+									header={camera.static_IP}
 									trigger={
 										<Button
 											className="actions col s1 offset-s9"
-											computerid={computer._id}
+											cameraid={camera._id}
 											>Update
 										</Button>}
 									actions={
 										<div>
 											<form 
-												computerid={computer._id}
+												cameraid={camera._id}
 												onSubmit={this.handleUpdate}
 											>
 												<Row>
 													<Input
-														label="User"
-														name="modal_user"
-														s={4}
-														defaultValue={computer.user}
-														onChange={this.handleInputChange} 
-													/>
-													<Input
 														label="Location"
 														name="modal_location"
 														s={4}
-														defaultValue={computer.location}
+														defaultValue={camera.location}
+														onChange={this.handleInputChange} 
+													/>
+													<Input
+														label="Camera Name in Axis"
+														name="modal_camera_name"
+														s={4}
+														defaultValue={camera.camera_name}
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Serial Number"
-														name="modal_serial_number"
+														label="Host Name"
+														name="modal_host_name"
 														s={4}
-														defaultValue={computer.serial_number}
+														defaultValue={camera.host_name}
 														onChange={this.handleInputChange}
 													/>
 													<Input
 														label="Mac Address"
 														name="modal_mac_address"
-														s={6}
-														defaultValue={computer.mac_address}
+														s={3}
+														defaultValue={camera.mac_address}
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Mac Address 2"
-														name="modal_mac_address_2"
-														s={6}
-														defaultValue={computer.mac_address_2}
+														label="Model"
+														name="modal_model"
+														s={3}
+														defaultValue={camera.model}
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Asset ID"
-														name="modal_asset_ID"
-														s={4}
-														defaultValue={computer.asset_ID}
+														label="Static IP"
+														name="modal_static_IP"
+														s={3}
+														defaultValue={camera.static_IP}
 														onChange={this.handleInputChange}
 													/>
 													<Input
-														label="Labeled"
-														name="modal_labeled"
-														s={4}
+														label="SD Card Size"
+														name="modal_sd_card_size"
+														s={3}
+														defaultValue={camera.sd_card_size}
+														onChange={this.handleInputChange}
+													/>
+													<Input
+														label="SNMP"
+														name="modal_SNMP"
+														s={12}
 														type="checkbox"
-														checked={computer.labeled}
-														onChange={this.handleInputChange}
-													/>
-													<Input
-														label="Ram Size"
-														name="modal_ram_size"
-														s={4}
-														defaultValue={computer.ram_size}
+														checked={camera.SNMP}
 														onChange={this.handleInputChange}
 													/>
 													<Input 
-														label="notes"
+														label="Notes"
 														name="modal_notes"
 														s={12}
 														type="textarea"
-														defaultValue={computer.notes}
+														defaultValue={camera.notes}
 														onChange={this.handleInputChange}
 													/>
 													<Input 
 														label="Last Verified"
 														name="modal_last_verified"
 														s={12}
-														defaultValue={moment(computer.last_verified).format("MM-DD-YY")}
+														defaultValue={moment(camera.last_verified).format("MM-DD-YY")}
 														onChange={this.handleInputChange}
 													/>
 												</Row>
@@ -333,7 +333,7 @@ class Chrome extends Component {
 								</Modal>
 								<Button 
 									className="actions col s1 red" 
-									onClick={this.deleteChrome.bind(this, computer)}
+									onClick={this.deleteCameras.bind(this, camera)}
 								>Delete
 								</Button>
 							</Row>
@@ -346,68 +346,68 @@ class Chrome extends Component {
 				</div>
 				)}
 				<div className="add-form">
-					<h5>Add a New Chrome Machine</h5>
-					<form id="ubmit_form" ref="submit_form" onSubmit={this.handleSubmit}>
+					<h5>Add a New Camera</h5>
+					<form id="submit_form" ref="submit_form" onSubmit={this.handleSubmit}>
 						<Row>
-							<Input
-								placeholder="User"
-								name="user"
-								s={4}
-								value={this.state.user}
-								onChange={this.handleInputChange} 
-							/>
-							<Input
+							<Input						
 								placeholder="Location"
 								name="location"
 								s={4}
 								value={this.state.location}
+								onChange={this.handleInputChange} 
+							/>
+							<Input
+								placeholder="Camera Name in Axis"
+								name="camera_name"
+								s={4}
+								value={this.state.camera_name}
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								placeholder="Serial Number"
-								name="serial_number"
+								placeholder="Host Name"
+								name="host_name"
 								s={4}
-								value={this.state.serial_number}
+								value={this.state.host_name}
 								onChange={this.handleInputChange}
 							/>
 							<Input
 								placeholder="Mac Address"
 								name="mac_address"
-								s={6}
+								s={3}
 								value={this.state.mac_address}
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								placeholder="Mac Address 2"
-								name="mac_address_2"
-								s={6}
-								value={this.state.mac_address_2}
+								placeholder="Model"
+								name="model"
+								s={3}
+								value={this.state.model}
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								placeholder="Asset ID"
-								name="asset_ID"
-								s={4}
-								value={this.state.asset_ID}
+								placeholder="Static IP"
+								name="static_IP"
+								s={3}
+								value={this.state.static_IP}
 								onChange={this.handleInputChange}
 							/>
 							<Input
-								label="Labeled"
-								name="labeled"
-								s={4}
+								placeholder="SD Card Size"
+								name="sd_card_size"
+								s={3}
+								value={this.state.sd_card_size}
+								onChange={this.handleInputChange}
+							/>
+							<Input
+								label="SNMP"
+								name="SNMP"
+								s={12}
 								type="checkbox"
-								checked={this.state.labeled}
-								onChange={this.handleInputChange}
-							/>
-							<Input
-								label="Ram Size"
-								name="ram_size"
-								s={4}
-								value={this.state.SSH}
+								checked={this.state.SNMP}
 								onChange={this.handleInputChange}
 							/>
 							<Input 
-								placeholder="notes"
+								placeholder="Notes"
 								name="notes"
 								s={12}
 								type="textarea"
@@ -417,7 +417,6 @@ class Chrome extends Component {
 							<Input 
 								placeholder="Last Verified"
 								name="last_verified"
-								type="date"
 								s={12}
 								value={this.state.last_verified}
 								onChange={this.handleInputChange}
@@ -438,11 +437,11 @@ class Chrome extends Component {
   					<Button floating icon='expand_more' onClick={this.toggleAll} node="a" href="#top" className='red'/>
   					<Button floating icon='add' className='yellow darken-1' node="a" href="#submit_form"/>
 					</Button>
-	      </div>
+	      </div> 				
 			</div>
 		);
 	}
 
 }
 
-export default Chrome;
+export default Cameras;

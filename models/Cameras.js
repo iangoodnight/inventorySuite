@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 var CamerasSchema = new Schema ({
-	locations: { type: String },
+	location: { type: String },
 	camera_name: { type: String },
 	host_name: { type: String },
 	mac_address: { type: String },

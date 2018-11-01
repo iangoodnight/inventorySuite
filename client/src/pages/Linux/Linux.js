@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import ReactDOM from 'react-dom';
 import { Row, Input, Button, Collapsible, CollapsibleItem, Modal } from "react-materialize";
 import API from "../../utils/API";
 import "./Linux.css";
+
 const moment = require("moment");
 
 class Linux extends Component {
@@ -10,6 +12,7 @@ class Linux extends Component {
 		super(props);
 		this.state = {
 			computers: [],
+			toggle: false,
 			user: "",
 			department: "",
 			location: "",
@@ -42,14 +45,15 @@ class Linux extends Component {
 			modalLast_verified: ""	
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
+		this.handleUpdate = this.handleUpdate.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.toggleAll = this.toggleAll.bind(this);
 	}
 
 	handleInputChange(e) {
 		const target = e.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
-		// console.log("handling input change where name: ", name, " and value: ", value);
 		this.setState({ 
 			[name] : value 
 		});
@@ -57,7 +61,7 @@ class Linux extends Component {
 
 	handleSubmit = event => {
 		event.preventDefault();
-		console.log("this.state: ", this.state);
+		// console.log("this.state: ", this.state);
 		const data = {
 			user: this.state.user,
 			department: this.state.department,
@@ -107,8 +111,8 @@ class Linux extends Component {
 	loadLinux = () => {
 		API.getLinux()
 			.then(res => {
-				console.log("getting computers: ", res.data);
-				console.log("current state: ", this.state);
+				// console.log("getting computers: ", res.data);
+				// console.log("current state: ", this.state);
 				this.setState({
 					computers: res.data
 				})
@@ -177,22 +181,66 @@ class Linux extends Component {
 		const delId = data._id;
 		API.deleteLinux(delId)
 			.then(res => {
-				console.log("deleting computers: ", delId);
+				// console.log("deleting computers: ", delId);
 				this.loadLinux();
 			})
 			.catch(err => console.log("error deleting computers: ", err));
+	}
+
+	toggleAll() {
+		var x = document.getElementsByTagName("li");
+		var y = document.getElementsByClassName("collapsible-header");
+		var z = document.getElementsByClassName("collapsible-body");
+		// console.log(this.state.toggleState);
+		if (!this.state.toggleState) {
+			for (let i of x) {
+				i.classList.add("active");
+			};
+			for (let j of y) {
+				j.classList.add("active");
+			};
+			for (let k of z) {
+				k.style.display = "block";
+			}; 
+			// console.log("triggering toggle");
+		} else {
+			for (let i of x) {
+				i.classList.remove("active");
+			};
+			for (let j of y) {
+				j.classList.remove("active");
+			};
+			for (let k of z) {
+				k.style.display = "none";
+			}; 
+			// console.log("triggering toggle");
+		}
+		this.setState({
+			toggleState: !this.state.toggleState
+		});
 	}
 
 	componentDidMount() {
 		this.loadLinux();
 	}
 
+	componentDidUpdate () {
+		// To allow for links on page
+	  let hash = this.props.location.hash.replace('#', '');
+    if (hash) {
+      let node = ReactDOM.findDOMNode(this.refs[hash]);
+      if (node) {
+        node.scrollIntoView();
+      }
+    }
+	}
+
 	render() {
 		return (
-			<div className="container">
+			<div className="container" ref="top">
 				<div className="container">
 					<Row>
-						<h4>Linux Machines</h4>
+						<h4 className="page-header">Linux Machines</h4>
 					</Row>					
 				</div>
 				{this.state.computers.length ? (
@@ -370,11 +418,9 @@ class Linux extends Component {
 					<h3> Uh-oh, looks like we are having some problems finding what you are looking for.</h3>
 				</div>
 				)}
-				<div>
-					<Button waves='light'>Button</Button>
-				</div>
-				<div>
-					<form onSubmit={this.handleSubmit}>
+				<div className="add-form">
+					<h5>Add a New Linux Machine</h5>
+					<form id="submit_form" ref="submit_form" onSubmit={this.handleSubmit}>
 						<Row>
 							<Input
 								placeholder="User"
@@ -497,6 +543,12 @@ class Linux extends Component {
 						</Row>
 					</form>
 				</div>
+	      <div>
+					<Button floating fab='vertical' icon='find_in_page' className='red' large style={{bottom: '45px', right: '24px'}}>
+  					<Button floating icon='expand_more' onClick={this.toggleAll} node="a" href="#top" className='red'/>
+  					<Button floating icon='add' className='yellow darken-1' node="a" href="#submit_form"/>
+					</Button>
+	      </div> 
 			</div>
 		);
 	}
