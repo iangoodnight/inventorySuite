@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-// import { Row, Input, Button } from "react-materialize";
 import Nav from "./components/Nav";
+import Footer from "./components/Footer";
 import Wrapper from "./components/Wrapper";
 import Cameras from "./pages/Cameras";
 import Chrome from "./pages/Chrome";
@@ -27,7 +27,7 @@ class App extends Component {
           <Fragment>
             <Wrapper>
               <Nav />
-              <div>
+              <div className="main">
                 <Switch>
                   <Route exact path="/" component={Things} />
                   <Route exact path="/cameras" component={Cameras} />
@@ -38,7 +38,8 @@ class App extends Component {
                   <Route exact path="/network" component={Network} />
                   <Route exact path="/things" component={Things} />                                   
                 </Switch>
-              </div>  
+              </div>
+              <Footer />  
             </Wrapper>
           </Fragment>
         </div>

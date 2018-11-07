@@ -418,9 +418,9 @@ class Linux extends Component {
 					<h3> Uh-oh, looks like we are having some problems finding what you are looking for.</h3>
 				</div>
 				)}
-				<div className="add-form">
+				<div className="add-form" ref="submit_form">
 					<h5>Add a New Linux Machine</h5>
-					<form id="submit_form" ref="submit_form" onSubmit={this.handleSubmit}>
+					<form onSubmit={this.handleSubmit}>
 						<Row>
 							<Input
 								placeholder="User"
